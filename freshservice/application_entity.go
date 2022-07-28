@@ -39,3 +39,10 @@ type AdditionalData struct {
 	GraphData    interface{} `json:"graph_data"`
 	LastSyncDate interface{} `json:"last_sync_date"`
 }
+
+// ApplicationListOptions holds the available options that can be
+// passed when requesting a list of Freshservice Applications
+type ApplicationListOptions struct {
+	PageQuery string
+}
+
