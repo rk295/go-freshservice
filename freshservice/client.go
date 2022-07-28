@@ -113,6 +113,11 @@ func stripURLScheme(domain string) string {
 	return domain
 }
 
+// Application is the interface between the HTTP client and the Freshservice application related endpoints
+func (fs *Client) Applications() ApplicationService {
+	return &ApplicationServiceClient{client: fs}
+}
+
 // Tickets is the interface between the HTTP client and the Freshservice ticket related endpoints
 func (fs *Client) Tickets() TicketService {
 	return &TicketServiceClient{client: fs}
