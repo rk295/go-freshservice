@@ -73,3 +73,21 @@ type ApplicationUserDetails struct {
 	LastUsed      time.Time `json:"last_used"`
 	Source        string    `json:"source"`
 }
+
+// ApplicationInstallations holds a list of Freshservice application installations
+type ApplicationInstallations struct {
+	List []ApplicationInstallationDetails `json:"installations"`
+}
+
+// ApplicationInstallationDetails holds the details of installations for a specific Freshservice application
+type ApplicationInstallationDetails struct {
+	ID                    int       `json:"id"`
+	CreatedAt             time.Time `json:"created_at"`
+	UpdatedAt             time.Time `json:"updated_at"`
+	InstallationPath      string    `json:"installation_path"`
+	Version               string    `json:"version"`
+	InstallationMachineID int       `json:"installation_machine_id"`
+	UserID                int       `json:"user_id"`
+	DepartmentID          int       `json:"department_id"`
+	InstallationDate      time.Time `json:"installation_date"`
+}

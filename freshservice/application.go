@@ -17,6 +17,7 @@ type ApplicationService interface {
 	Get(context.Context, int64) (*ApplicationDetails, error)
 	ListLicenses(context.Context, int64) ([]LicensesDetails, error)
 	ListUsers(context.Context, int64) ([]ApplicationUserDetails, error)
+	ListInstallations(context.Context, int64) ([]ApplicationInstallationDetails, error)
 }
 
 // ApplicationServiceClient facilitates requests with the TicketService methods
@@ -112,6 +113,28 @@ func (a *ApplicationServiceClient) ListUsers(ctx context.Context, appID int64) (
 	}
 
 	res := &ApplicationUsers{}
+	if _, err = a.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return res.List, nil
+}
+
+// ListInstallations lists all the installations of an application
+func (a *ApplicationServiceClient) ListInstallations(ctx context.Context, appID int64) ([]ApplicationInstallationDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   a.client.Domain,
+		Path:   fmt.Sprintf("%s/%d/installations", applicationURL, appID),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &ApplicationInstallations{}
 	if _, err = a.client.makeRequest(req, res); err != nil {
 		return nil, err
 	}
