@@ -55,3 +55,21 @@ type LicensesDetails struct {
 	CreatedTime time.Time `json:"created_time"`
 	UpdatedTime time.Time `json:"updated_time"`
 }
+
+// ApplicationUsers holds a list of Freshservice application users
+type ApplicationUsers struct {
+	List []ApplicationUserDetails `json:"application_users"`
+}
+
+// ApplicationUserDetails holds the details of users for a specific Freshservice application
+type ApplicationUserDetails struct {
+	ID            int       `json:"id"`
+	CreatedAt     time.Time `json:"created_at"`
+	UpdatedAt     time.Time `json:"updated_at"`
+	UserID        int       `json:"user_id"`
+	LicenseID     int       `json:"license_id"`
+	AllocatedDate time.Time `json:"allocated_date"`
+	FirstUsed     time.Time `json:"first_used"`
+	LastUsed      time.Time `json:"last_used"`
+	Source        string    `json:"source"`
+}

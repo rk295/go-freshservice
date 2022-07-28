@@ -16,6 +16,7 @@ type ApplicationService interface {
 	List(context.Context, QueryFilter) ([]ApplicationDetails, string, error)
 	Get(context.Context, int64) (*ApplicationDetails, error)
 	ListLicenses(context.Context, int64) ([]LicensesDetails, error)
+	ListUsers(context.Context, int64) ([]ApplicationUserDetails, error)
 }
 
 // ApplicationServiceClient facilitates requests with the TicketService methods
@@ -89,6 +90,28 @@ func (a *ApplicationServiceClient) ListLicenses(ctx context.Context, appID int64
 	}
 
 	res := &Licenses{}
+	if _, err = a.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return res.List, nil
+}
+
+// ListUsers lists all the users of an application
+func (a *ApplicationServiceClient) ListUsers(ctx context.Context, appID int64) ([]ApplicationUserDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   a.client.Domain,
+		Path:   fmt.Sprintf("%s/%d/users", applicationURL, appID),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &ApplicationUsers{}
 	if _, err = a.client.makeRequest(req, res); err != nil {
 		return nil, err
 	}
