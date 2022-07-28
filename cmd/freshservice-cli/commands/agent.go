@@ -16,11 +16,13 @@ var (
 		Run:   agentRun,
 	}
 
-	agentID int
+	agentID    int
+	agentEmail string
 )
 
 func init() {
-	agentCmd.Flags().IntVarP(&agentID, "agent", "a", 0, "Get a specific agent")
+	agentCmd.Flags().IntVarP(&agentID, "agent", "a", 0, "Get a specific agent by ID")
+	agentCmd.Flags().StringVarP(&agentEmail, "email", "e", "", "Get a specific agent by email")
 	rootCmd.AddCommand(agentCmd)
 }
 
@@ -56,6 +58,10 @@ func agentRun(cmd *cobra.Command, args []string) {
 
 			f := &fs.AgentListFilter{
 				PageQuery: page,
+			}
+
+			if agentEmail != "" {
+				f.Email = &agentEmail
 			}
 
 			t, nextPage, err := api.Agents().List(ctx, f)
