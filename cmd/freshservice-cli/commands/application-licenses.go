@@ -12,7 +12,7 @@ import (
 
 var (
 	applicationLicensesCmd = &cobra.Command{
-		Use:   "license",
+		Use:   "licenses",
 		Short: "List application licenses",
 		Run:   applicationLicenseRun,
 	}
