@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 
 	fs "github.com/rk295/go-freshservice/freshservice"
@@ -36,7 +35,8 @@ func applicationRun(cmd *cobra.Command, args []string) {
 
 	api, err := fs.New(ctx, domain, token, nil)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("error: ", err)
+		os.Exit(1)
 	}
 
 	var output interface{}
@@ -44,7 +44,8 @@ func applicationRun(cmd *cobra.Command, args []string) {
 	if appID != 0 {
 		t, err := api.Applications().Get(ctx, appID)
 		if err != nil {
-			log.Fatal("Error: ", err)
+			fmt.Println("error: ", err)
+			os.Exit(1)
 		}
 		output = t
 	} else {
@@ -54,8 +55,8 @@ func applicationRun(cmd *cobra.Command, args []string) {
 		for {
 			t, nextPage, err := api.Applications().List(ctx, &fs.ApplicationListOptions{PageQuery: page})
 			if err != nil {
-				log.Println(t)
-				log.Fatal("Error: ", err)
+				fmt.Println("error: ", err)
+				os.Exit(1)
 			}
 
 			applications.List = append(applications.List, t...)
@@ -72,7 +73,8 @@ func applicationRun(cmd *cobra.Command, args []string) {
 
 	txt, err := printJSON(output)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("error: ", err)
+		os.Exit(1)
 	}
 
 	fmt.Println(txt)
