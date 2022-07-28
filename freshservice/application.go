@@ -15,6 +15,7 @@ const applicationURL = "/api/v2/applications"
 type ApplicationService interface {
 	List(context.Context, QueryFilter) ([]ApplicationDetails, string, error)
 	Get(context.Context, int64) (*ApplicationDetails, error)
+	ListLicenses(context.Context, int64) ([]LicensesDetails, error)
 }
 
 // ApplicationServiceClient facilitates requests with the TicketService methods
@@ -45,7 +46,6 @@ func (a *ApplicationServiceClient) List(ctx context.Context, filter QueryFilter)
 	res := &Applications{}
 	resp, err := a.client.makeRequest(req, res)
 	if err != nil {
-		fmt.Println("error making request to ", url.String())
 		return nil, "", err
 	}
 
@@ -73,6 +73,29 @@ func (a *ApplicationServiceClient) Get(ctx context.Context, appID int64) (*Appli
 
 	return &res.Details, nil
 }
+
+// ListLicenses lists all the licenses for an application
+func (a *ApplicationServiceClient) ListLicenses(ctx context.Context, appID int64) ([]LicensesDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   a.client.Domain,
+		Path:   fmt.Sprintf("%s/%d/licenses", applicationURL, appID),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Licenses{}
+	if _, err = a.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return res.List, nil
+}
+
 // QueryString allows us to pass TicketListOptions as a QueryFilter and
 // will return a new endpoint URL with query parameters attached
 func (opts *ApplicationListOptions) QueryString() string {
