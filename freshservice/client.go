@@ -95,7 +95,11 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 		}
 	}()
 
-	if res.StatusCode < 200 || res.StatusCode > 299 {
+	if res.StatusCode == http.StatusNotFound {
+		return res, fmt.Errorf("%s %s not found", r.Method, r.URL)
+	}
+
+	if res.StatusCode < http.StatusOK || res.StatusCode > 299 {
 		v = ErrorResponse{}
 	}
 
