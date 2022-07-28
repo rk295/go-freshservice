@@ -3,7 +3,6 @@ package commands
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 
 	fs "github.com/CoreyGriffin/go-freshservice/freshservice"
@@ -21,36 +20,46 @@ func init() {
 }
 
 func ticketsRun(cmd *cobra.Command, args []string) {
-	token := os.Getenv("TOKEN")
-	domain := os.Getenv("DOMAIN")
+
+	token, domain, err := getConfig()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 
 	ctx := context.Background()
 	api, err := fs.New(ctx, domain, token, nil)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("error: ", err)
+		os.Exit(1)
 	}
 
-	t, np, err := api.Tickets().List(ctx, nil)
-	if err != nil {
-		log.Fatal(err)
-	}
+	page := "page=1"
+	tickets := &fs.Tickets{}
 
-	tList := []string{}
-	for _, tick := range t {
-		tList = append(tList, fmt.Sprintf("\n%d - %d", tick.ID, tick.ResponderID))
-	}
-
-	// example querying another page using the returned query parameter
-	if np != "" {
-		t, _, err := api.Tickets().List(ctx, &fs.TicketListOptions{PageQuery: np})
+	for {
+		t, nextPage, err := api.Tickets().List(ctx, &fs.TicketListOptions{PageQuery: page})
 		if err != nil {
-			log.Fatal(err)
+			fmt.Println("error: ", err)
+			os.Exit(1)
 		}
-		for _, tick := range t {
-			tList = append(tList, fmt.Sprintf("\n%s - %d", tick.Subject, tick.ResponderID))
+
+		tickets.List = append(tickets.List, t...)
+
+		if nextPage == "" {
+			break
 		}
+
+		page = nextPage
+
 	}
 
-	fmt.Printf("All Tickets:\nCount: %d\nResults: %v\n", len(tList), tList)
+	txt, err := printJSON(tickets)
+	if err != nil {
+		fmt.Println("error: ", err)
+		os.Exit(1)
+	}
+
+	fmt.Println(txt)
 
 }
