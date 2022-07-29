@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/CoreyGriffin/go-freshservice/freshservice"
+	"github.com/rk295/go-freshservice/freshservice"
 	"github.com/stretchr/testify/assert"
 )
 

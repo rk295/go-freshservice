@@ -1,13 +1,13 @@
 # go-freshservice
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/CoreyGriffin/go-freshservice/freshservice.svg)](https://pkg.go.dev/github.com/CoreyGriffin/go-freshservice/freshservice)
+[![Go Reference](https://pkg.go.dev/badge/github.com/rk295/go-freshservice/freshservice.svg)](https://pkg.go.dev/github.com/rk295/go-freshservice/freshservice)
 
 go-freshservice is an unofficial Golang API client that aims to provide access to most facets of the [Freshservice API](https://api.freshservice.com/v2/#introduction)
 
 ## Usage
 
 ```go
-import fs "github.com/CoreyGriffin/go-freshservice/freshservice"
+import fs "github.com/rk295/go-freshservice/freshservice"
 
 // You can optionally setup a custom HTTP client to use which can
 // include any settings you desire. If you would like to use the

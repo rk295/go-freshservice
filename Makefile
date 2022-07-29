@@ -4,7 +4,7 @@ DIRS := $(shell go list ./...)
 
 help:
 	@echo ""
-	@echo "Welcome to CoreyGriffin/go-freshservice Makefile."
+	@echo "Welcome to rk295/go-freshservice Makefile."
 	@echo "The following commands are available:"
 	@echo ""
 	@echo "    make clean             : Cleanup all test files and binaries"
