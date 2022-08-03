@@ -14,7 +14,7 @@ const assetURL = "/api/v2/assets"
 // the asset endpoints of the Freshservice API
 type AssetService interface {
 	List(context.Context, QueryFilter) ([]AssetDetails, string, error)
-	Get(context.Context, int) (*AssetDetails, error)
+	Get(context.Context, int, QueryFilter) (*AssetDetails, error)
 }
 
 // AssetServiceClient facilitates requests with the AssetService methods
@@ -52,12 +52,16 @@ func (a *AssetServiceClient) List(ctx context.Context, filter QueryFilter) ([]As
 }
 
 // Get a specific asset
-func (a *AssetServiceClient) Get(ctx context.Context, assetID int) (*AssetDetails, error) {
+func (a *AssetServiceClient) Get(ctx context.Context, assetID int, filter QueryFilter) (*AssetDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
 		Path:   fmt.Sprintf("%s/%d", assetURL, assetID),
+	}
+
+	if filter != nil {
+		url.RawQuery = filter.QueryString()
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
