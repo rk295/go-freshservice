@@ -24,6 +24,7 @@ type AssetServiceClient struct {
 
 // List all Assets
 // Append the parameter "page=[:page_no]" in the url to traverse through pages.
+// TODO: this needs to have filtering added: https://api.freshservice.com/#filter_assets
 func (a *AssetServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetDetails, string, error) {
 
 	url := &url.URL{
