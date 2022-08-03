@@ -152,6 +152,11 @@ func (fs *Client) BusinessHours() BusinessHoursService {
 	return &BusinessHoursServiceClient{client: fs}
 }
 
+// Requesters is the interface between the HTTP client and the Freshservice business hours related endpoints
+func (fs *Client) Requesters() RequesterService {
+	return &RequesterServiceClient{client: fs}
+}
+
 // Tasks is the interface between the HTTP client and the Freshservice business hours related endpoints
 func (fs *Client) Tasks() TaskService {
 	return &TaskServiceClient{client: fs}
