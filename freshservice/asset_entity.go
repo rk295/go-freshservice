@@ -1,6 +1,7 @@
 package freshservice
 
-import "time"
+	"strings"
+	"time"
 
 // Assets holds a list of Freshservice asset details
 type Assets struct {
@@ -47,4 +48,25 @@ type AssetListOptions struct {
 type AssetEmbedOptions struct {
 	TypeFields bool
 	Trashed    bool
+}
+
+// QueryString allows us to pass AssetListOptions as a QueryFilter and
+// will return a new endpoint URL with query parameters attached
+func (opts *AssetListOptions) QueryString() string {
+	var qs []string
+
+	if opts.PageQuery != "" {
+		qs = append(qs, opts.PageQuery)
+	}
+
+	if opts.Embed != nil {
+		if opts.Embed.TypeFields {
+			qs = append(qs, "include=type_fields")
+		}
+		if opts.Embed.Trashed {
+			qs = append(qs, fmt.Sprintf("trashed=%v", opts.Embed.Trashed))
+		}
+	}
+
+	return strings.Join(qs, "&")
 }

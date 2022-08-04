@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"strings"
 )
 
 const assetURL = "/api/v2/assets"
@@ -75,25 +74,4 @@ func (a *AssetServiceClient) Get(ctx context.Context, assetID int, filter QueryF
 	}
 
 	return &res.Details, nil
-}
-
-// QueryString allows us to pass AssetListOptions as a QueryFilter and
-// will return a new endpoint URL with query parameters attached
-func (opts *AssetListOptions) QueryString() string {
-	var qs []string
-
-	if opts.PageQuery != "" {
-		qs = append(qs, opts.PageQuery)
-	}
-
-	if opts.Embed != nil {
-		if opts.Embed.TypeFields {
-			qs = append(qs, "include=type_fields")
-		}
-		if opts.Embed.Trashed {
-			qs = append(qs, fmt.Sprintf("trashed=%v", opts.Embed.Trashed))
-		}
-	}
-
-	return strings.Join(qs, "&")
 }
