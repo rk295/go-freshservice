@@ -1,6 +1,7 @@
 package freshservice
 
 import (
+	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
@@ -52,5 +53,5 @@ func ParseNextPage(rawURL string) string {
 	if err != nil {
 		return ""
 	}
-	return u.RawQuery
+	return fmt.Sprintf("page=%s", u.Query().Get("page"))
 }
