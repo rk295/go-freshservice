@@ -82,6 +82,10 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 		r.URL.Scheme = "http"
 	}
 
+	if os.Getenv("GO_DEBUG") == "1" {
+		fmt.Printf("url = %s\n", r.URL.String())
+	}
+
 	r.Close = true
 
 	res, err := fs.client.Do(r)
@@ -125,6 +129,11 @@ func (fs *Client) Applications() ApplicationService {
 // Asset is the interface between the HTTP client and the Freshservice asset related endpoints
 func (fs *Client) Assets() AssetService {
 	return &AssetServiceClient{client: fs}
+}
+
+// AssetTypes is the interface between the HTTP client and the Freshservice asset related endpoints
+func (fs *Client) AssetTypes() AssetTypeService {
+	return &AssetTypeServiceClient{client: fs}
 }
 
 // Tickets is the interface between the HTTP client and the Freshservice ticket related endpoints
