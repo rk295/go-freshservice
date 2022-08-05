@@ -21,13 +21,13 @@ type Asset struct {
 type AssetDetails struct {
 	AgentID      int64     `json:"agent_id"`
 	AssetTag     string    `json:"asset_tag"`
-	AssetTypeID  int       `json:"asset_type_id"`
+	AssetTypeID  int64     `json:"asset_type_id"`
 	AssignedOn   time.Time `json:"assigned_on"`
 	AuthorType   string    `json:"author_type"`
 	CreatedAt    time.Time `json:"created_at"`
 	DepartmentID int64     `json:"department_id"`
 	Description  string    `json:"description"`
-	DisplayID    int       `json:"display_id"`
+	DisplayID    int64     `json:"display_id"`
 	GroupID      int64     `json:"group_id"`
 	ID           int64     `json:"id"`
 	Impact       string    `json:"impact"`
