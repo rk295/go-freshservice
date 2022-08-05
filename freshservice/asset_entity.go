@@ -29,7 +29,7 @@ type AssetDetails struct {
 	Description  string    `json:"description"`
 	DisplayID    int       `json:"display_id"`
 	GroupID      int64     `json:"group_id"`
-	ID           int       `json:"id"`
+	ID           int64     `json:"id"`
 	Impact       string    `json:"impact"`
 	LocationID   int64     `json:"location_id"`
 	Name         string    `json:"name"`
