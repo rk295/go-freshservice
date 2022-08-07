@@ -104,7 +104,11 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 	}
 
 	if res.StatusCode < http.StatusOK || res.StatusCode > 299 {
-		v = ErrorResponse{}
+		buf := new(strings.Builder)
+		if _, err = io.Copy(buf, res.Body); err != nil {
+			buf.WriteString(fmt.Sprintf("HTTP error (%d): additionally, error reading response body", res.StatusCode))
+		}
+		return res, fmt.Errorf("HTTP error (%d): %s", res.StatusCode, buf.String())
 	}
 
 	if v == nil {
