@@ -72,3 +72,23 @@ type ServiceCatalogItemListFilter struct {
 func (scf *ServiceCatalogItemListFilter) QueryString() string {
 	return fmt.Sprintf("category_id=%d", scf.CatalogID)
 }
+
+// ServiceRequestOptions options for creating a new Service Request
+type ServiceRequestOptions struct {
+	Quantity     int          `json:"quantity"`
+	Email        string       `json:"email"`
+	CustomFields CustomFields `json:"custom_fields"`
+	ChildItems   []ChildItem  `json:"child_items"`
+}
+
+type ChildItem struct {
+	Quantity      int          `json:"quantity"`
+	ServiceItemID int          `json:"service_item_id"`
+	Email         string       `json:"email"`
+	CustomFields  CustomFields `json:"custom_fields"`
+}
+
+// ServiceRequestResponse is the response from a new service request API call
+type ServiceRequestResponse struct {
+	ServiceRequest TicketDetails `json:"service_request"`
+}
