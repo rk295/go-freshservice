@@ -77,6 +77,10 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 	r.Header.Set("Strict-Transport-Security", "max-age=31536000 ; includeSubDomains")
 	r.SetBasicAuth(fs.Auth.APIKey, "x")
 
+	if r.Method == http.MethodPost || r.Method == http.MethodPut {
+		r.Header.Set("Content-Type", "application/json")
+	}
+
 	// Replace scheme for unit tests that are using a mock server
 	if os.Getenv("GO_TEST") == "1" {
 		r.URL.Scheme = "http"
