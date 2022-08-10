@@ -140,6 +140,11 @@ func (fs *Client) AssetTypes() AssetTypeService {
 	return &AssetTypeServiceClient{client: fs}
 }
 
+// Departments is the interface between the HTTP client and the Freshservice department related endpoints
+func (fs *Client) Departments() DepartmentsService {
+	return &DepartmentServiceClient{client: fs}
+}
+
 // Tickets is the interface between the HTTP client and the Freshservice ticket related endpoints
 func (fs *Client) Tickets() TicketService {
 	return &TicketServiceClient{client: fs}
