@@ -2,6 +2,7 @@ package freshservice
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 )
 
@@ -55,6 +56,8 @@ type RequesterListOptions struct {
 // RequesterFilter are optional filters that can be enabled when querying a requester list
 type RequesterFilter struct {
 	Email             *string
+	FirstName         *string
+	LastName          *string
 	MobilePhoneNumber *string
 	WorkPhoneNumber   *string
 }
@@ -77,6 +80,18 @@ func (opts *RequesterListOptions) QueryString() string {
 		case opts.FilterBy.WorkPhoneNumber != nil:
 			qs = append(qs, fmt.Sprintf("work_phone_number=%s", *opts.FilterBy.WorkPhoneNumber))
 		}
+
+		filterStr := []string{}
+
+		if opts.FilterBy.LastName != nil {
+			filterStr = append(filterStr, fmt.Sprintf("last_name:'%s'", *opts.FilterBy.LastName))
+		}
+		if opts.FilterBy.FirstName != nil {
+			filterStr = append(filterStr, fmt.Sprintf("first_name:'%s'", *opts.FilterBy.FirstName))
+		}
+
+		filter := fmt.Sprintf("query=%s", url.PathEscape("\""+strings.Join(filterStr, " AND ")+"\""))
+		qs = append(qs, filter)
 	}
 	return strings.Join(qs, "&")
 }
