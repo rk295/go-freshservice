@@ -92,6 +92,12 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 
 	r.Close = true
 
+	if os.Getenv("GO_DEBUG") == "1" {
+		for k, v := range r.Header {
+			fmt.Printf("request header: %s: %s\n", k, v)
+		}
+	}
+
 	res, err := fs.client.Do(r)
 	if err != nil {
 		return nil, fmt.Errorf("error making %s request to %s", r.Method, r.URL)
@@ -102,6 +108,12 @@ func (fs *Client) makeRequest(r *http.Request, v interface{}) (*http.Response, e
 			panic(err)
 		}
 	}()
+
+	if os.Getenv("GO_DEBUG") == "1" {
+		for k, v := range res.Header {
+			fmt.Printf("response header: %s: %s\n", k, v)
+		}
+	}
 
 	if res.StatusCode == http.StatusNotFound {
 		return res, fmt.Errorf("%s %s not found", r.Method, r.URL)
