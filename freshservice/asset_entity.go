@@ -114,7 +114,6 @@ func (opts *AssetListOptions) QueryString() string {
 		qs = append(qs, filter)
 	}
 
-	// Old below here, leave
 	if opts.Embed != nil {
 		if opts.Embed.TypeFields {
 			qs = append(qs, "include=type_fields")
