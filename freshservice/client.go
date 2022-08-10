@@ -145,6 +145,11 @@ func (fs *Client) Departments() DepartmentsService {
 	return &DepartmentServiceClient{client: fs}
 }
 
+// Locations is the interface between the HTTP client and the Freshservice location related endpoints
+func (fs *Client) Locations() LocationsService {
+	return &locationServiceClient{client: fs}
+}
+
 // Tickets is the interface between the HTTP client and the Freshservice ticket related endpoints
 func (fs *Client) Tickets() TicketService {
 	return &TicketServiceClient{client: fs}
