@@ -2,7 +2,13 @@ package freshservice
 
 // Generated Code DO NOT EDIT
 
-const serviceCatalogURL = "/api/v2/service_catalogs"
+import (
+	"context"
+	"net/http"
+	"net/url"
+)
+
+const serviceCatalogURL = "/api/v2/service_catalog"
 
 // ServiceCatalogs holds a list of Freshservice ServiceCatalog details
 type ServiceCatalogs struct {
@@ -22,4 +28,27 @@ func (fs *Client) ServiceCatalogs() ServiceCatalogsService {
 // ServiceCatalogsServiceClient facilitates requests with the ServiceCatalogsService methods
 type ServiceCatalogsServiceClient struct {
 	client *Client
+}
+
+// List all serviceCatalogs
+func (d *ServiceCatalogsServiceClient) List(ctx context.Context) ([]ServiceCatalogDetails, string, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   serviceCatalogURL,
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	res := &ServiceCatalogs{}
+	resp, err := d.client.makeRequest(req, res)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return res.List, HasNextPage(resp), nil
 }

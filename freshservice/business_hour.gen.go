@@ -2,6 +2,12 @@ package freshservice
 
 // Generated Code DO NOT EDIT
 
+import (
+	"context"
+	"net/http"
+	"net/url"
+)
+
 const businessHourURL = "/api/v2/business_hours"
 
 // BusinessHours holds a list of Freshservice BusinessHour details
@@ -22,4 +28,27 @@ func (fs *Client) BusinessHours() BusinessHoursService {
 // BusinessHoursServiceClient facilitates requests with the BusinessHoursService methods
 type BusinessHoursServiceClient struct {
 	client *Client
+}
+
+// List all businessHours
+func (d *BusinessHoursServiceClient) List(ctx context.Context) ([]BusinessHourDetails, string, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   businessHourURL,
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	res := &BusinessHours{}
+	resp, err := d.client.makeRequest(req, res)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return res.List, HasNextPage(resp), nil
 }

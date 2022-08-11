@@ -19,7 +19,8 @@ var (
 	fEndpoint    = flag.String("endpoint", "", "endpoint to generate code for")
 	fAPIEndpoint = flag.String("api-endpoint", "", "endpoint of the API endpoint, defaults endpoint")
 	fJSONKey     = flag.String("json-key", "", "json key to use for the API endpoint")
-	fGenList     = flag.Bool("generate-list", false, "should we generate a List() function")
+	fNoList      = flag.Bool("no-list", false, "disabled generation of List() method")
+	fNoFilter    = flag.Bool("no-filter", false, "should we include the filter parameter")
 )
 
 func Plural(s string) string {
@@ -60,10 +61,6 @@ func main() {
 
 	outputFilename := flag.Arg(0)
 
-	if *fAPIEndpoint == "" {
-		*fAPIEndpoint = *fEndpoint
-	}
-
 	if *fJSONKey == "" {
 		*fJSONKey = *fEndpoint
 	}
@@ -81,10 +78,11 @@ func main() {
 	}
 
 	args := map[string]interface{}{
-		"Endpoint":     *fEndpoint,
-		"APIEndpoint":  *fAPIEndpoint,
-		"JSONKey":      *fJSONKey,
-		"GenerateList": *fGenList,
+		"Endpoint":      *fEndpoint,
+		"APIEndpoint":   *fAPIEndpoint,
+		"JSONKey":       *fJSONKey,
+		"IncludeList":   !*fNoList,
+		"IncludeFilter": !*fNoFilter,
 	}
 
 	o := bytes.NewBuffer(nil)
@@ -106,7 +104,7 @@ func main() {
 var funcTemplate = `package freshservice
 
 // Generated Code DO NOT EDIT
-{{if .GenerateList}}
+{{if .IncludeList}}
 import (
 	"context"
 	"net/http"
@@ -114,7 +112,7 @@ import (
 )
 {{end}}
 
-const {{ .Endpoint }}URL = "/api/v2/{{Plural .APIEndpoint}}"
+const {{ .Endpoint }}URL = "/api/v2/{{if .APIEndpoint}}{{ .APIEndpoint }}{{else}}{{Plural .Endpoint}}{{end}}"
 
 
 // {{Export (Plural .Endpoint) }} holds a list of Freshservice {{Export .Endpoint }} details
@@ -138,9 +136,9 @@ type {{Export (Plural .Endpoint) }}ServiceClient struct {
 	client *Client
 }
 
-{{if .GenerateList}}
+{{if .IncludeList}}
 // List all {{Plural .Endpoint }}
-func (d *{{Export (Plural .Endpoint) }}ServiceClient) List(ctx context.Context, filter QueryFilter) ([]{{Export .Endpoint}}Details, string, error) {
+func (d *{{Export (Plural .Endpoint) }}ServiceClient) List(ctx context.Context{{if .IncludeFilter}}, filter QueryFilter{{end}}) ([]{{Export .Endpoint}}Details, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -148,9 +146,11 @@ func (d *{{Export (Plural .Endpoint) }}ServiceClient) List(ctx context.Context, 
 		Path:   {{ .Endpoint}}URL,
 	}
 
+	{{if .IncludeFilter}}
 	if filter != nil {
 		url.RawQuery = filter.QueryString()
 	}
+	{{end}}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
 	if err != nil {

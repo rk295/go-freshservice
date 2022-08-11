@@ -2,6 +2,12 @@ package freshservice
 
 // Generated Code DO NOT EDIT
 
+import (
+	"context"
+	"net/http"
+	"net/url"
+)
+
 const announcementURL = "/api/v2/announcements"
 
 // Announcements holds a list of Freshservice Announcement details
@@ -22,4 +28,31 @@ func (fs *Client) Announcements() AnnouncementsService {
 // AnnouncementsServiceClient facilitates requests with the AnnouncementsService methods
 type AnnouncementsServiceClient struct {
 	client *Client
+}
+
+// List all announcements
+func (d *AnnouncementsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AnnouncementDetails, string, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   announcementURL,
+	}
+
+	if filter != nil {
+		url.RawQuery = filter.QueryString()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	res := &Announcements{}
+	resp, err := d.client.makeRequest(req, res)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return res.List, HasNextPage(resp), nil
 }

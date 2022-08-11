@@ -18,36 +18,10 @@ var (
 // ServiceCatalogsService is an interface for interacting with
 // the service catalog endpoints of the Freshservice API
 type ServiceCatalogsService interface {
-	List(context.Context, QueryFilter) ([]ServiceCatalogDetails, error)
+	List(context.Context) ([]ServiceCatalogDetails, string, error)
 	Categories(context.Context) ([]ServiceCategory, error)
 	CreateRequest(context.Context, int, *ServiceRequestOptions) (*ServiceRequestResponse, error)
 	Get(context.Context, int) (*ServiceCatalogDetails, error)
-}
-
-// List all service category items in Freshservice
-// Optional filter: category_id=[category_id]
-func (sc *ServiceCatalogsServiceClient) List(ctx context.Context, filter QueryFilter) ([]ServiceCatalogDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   sc.client.Domain,
-		Path:   serviceCatalogItemURL,
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &ServiceCatalogs{}
-	if _, err := sc.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-
-	return res.List, nil
 }
 
 // Categories will list all service catalog item categories in freshservice

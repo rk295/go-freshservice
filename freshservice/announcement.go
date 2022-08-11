@@ -12,35 +12,11 @@ import (
 // AnnouncementsService is an interface for interacting with
 // the announcement endpoints of the Freshservice API
 type AnnouncementsService interface {
-	List(context.Context, QueryFilter) ([]AnnouncementDetails, error)
+	List(context.Context, QueryFilter) ([]AnnouncementDetails, string, error)
 	Get(context.Context, int) (*AnnouncementDetails, error)
 	Create(context.Context, *AnnouncementDetails) (*AnnouncementDetails, error)
 	Update(context.Context, int, *AnnouncementDetails) (*AnnouncementDetails, error)
 	Delete(context.Context, int) error
-}
-
-// List announcements in Freshservice
-func (a *AnnouncementsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AnnouncementDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   a.client.Domain,
-		Path:   announcementURL,
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &Announcements{}
-	if _, err := a.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-	return res.List, nil
 }
 
 // Get a specific Freshservice announcement

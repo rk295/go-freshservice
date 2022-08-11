@@ -22,32 +22,6 @@ type AgentsService interface {
 	ConvertToRequester(context.Context, int) (*AgentDetails, error)
 }
 
-// List all freshservice agents
-func (as *AgentsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AgentDetails, string, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   as.client.Domain,
-		Path:   agentURL,
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, "", err
-	}
-
-	res := &Agents{}
-	resp, err := as.client.makeRequest(req, res)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return res.List, HasNextPage(resp), nil
-}
-
 // Get a specific Freshservice agent
 func (as *AgentsServiceClient) Get(ctx context.Context, id int) (*AgentDetails, error) {
 	url := &url.URL{

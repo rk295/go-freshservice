@@ -2,6 +2,12 @@ package freshservice
 
 // Generated Code DO NOT EDIT
 
+import (
+	"context"
+	"net/http"
+	"net/url"
+)
+
 const assetTypeURL = "/api/v2/asset_types"
 
 // AssetTypes holds a list of Freshservice AssetType details
@@ -22,4 +28,31 @@ func (fs *Client) AssetTypes() AssetTypesService {
 // AssetTypesServiceClient facilitates requests with the AssetTypesService methods
 type AssetTypesServiceClient struct {
 	client *Client
+}
+
+// List all assetTypes
+func (d *AssetTypesServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetTypeDetails, string, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   assetTypeURL,
+	}
+
+	if filter != nil {
+		url.RawQuery = filter.QueryString()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	res := &AssetTypes{}
+	resp, err := d.client.makeRequest(req, res)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return res.List, HasNextPage(resp), nil
 }
