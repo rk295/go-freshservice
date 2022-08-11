@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const serviceCatalogURL = "/api/v2/service_catalog"
@@ -51,4 +53,26 @@ func (d *ServiceCatalogsServiceClient) List(ctx context.Context) ([]ServiceCatal
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific serviceCatalog
+func (d *ServiceCatalogsServiceClient) Get(ctx context.Context, id int) (*ServiceCatalogDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(serviceCatalogURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &ServiceCatalog{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

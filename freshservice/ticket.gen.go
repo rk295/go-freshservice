@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const ticketURL = "/api/v2/tickets"
@@ -55,4 +57,26 @@ func (d *TicketsServiceClient) List(ctx context.Context, filter QueryFilter) ([]
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific ticket
+func (d *TicketsServiceClient) Get(ctx context.Context, id int) (*TicketDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(ticketURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Ticket{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

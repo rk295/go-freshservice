@@ -19,27 +19,6 @@ type AnnouncementsService interface {
 	Delete(context.Context, int) error
 }
 
-// Get a specific Freshservice announcement
-func (a *AnnouncementsServiceClient) Get(ctx context.Context, id int) (*AnnouncementDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   a.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", announcementURL, id),
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &Announcement{}
-	if _, err := a.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-
-	return &res.Details, nil
-}
-
 // Create a new announcement in Freshservice
 func (a *AnnouncementsServiceClient) Create(ctx context.Context, details *AnnouncementDetails) (*AnnouncementDetails, error) {
 	url := &url.URL{

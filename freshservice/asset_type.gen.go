@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const assetTypeURL = "/api/v2/asset_types"
@@ -55,4 +57,26 @@ func (d *AssetTypesServiceClient) List(ctx context.Context, filter QueryFilter) 
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific assetType
+func (d *AssetTypesServiceClient) Get(ctx context.Context, id int) (*AssetTypeDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(assetTypeURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &AssetType{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

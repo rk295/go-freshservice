@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const locationURL = "/api/v2/locations"
@@ -55,4 +57,26 @@ func (d *LocationsServiceClient) List(ctx context.Context, filter QueryFilter) (
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific location
+func (d *LocationsServiceClient) Get(ctx context.Context, id int) (*LocationDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(locationURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Location{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const requesterURL = "/api/v2/requesters"
@@ -55,4 +57,26 @@ func (d *RequestersServiceClient) List(ctx context.Context, filter QueryFilter) 
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific requester
+func (d *RequestersServiceClient) Get(ctx context.Context, id int) (*RequesterDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(requesterURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Requester{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

@@ -20,6 +20,7 @@ var (
 	fAPIEndpoint = flag.String("api-endpoint", "", "endpoint of the API endpoint, defaults endpoint")
 	fJSONKey     = flag.String("json-key", "", "json key to use for the API endpoint")
 	fNoList      = flag.Bool("no-list", false, "disabled generation of List() method")
+	fNoGet       = flag.Bool("no-get", false, "disabled generation of Get() method")
 	fNoFilter    = flag.Bool("no-filter", false, "should we include the filter parameter")
 )
 
@@ -82,6 +83,7 @@ func main() {
 		"APIEndpoint":   *fAPIEndpoint,
 		"JSONKey":       *fJSONKey,
 		"IncludeList":   !*fNoList,
+		"IncludeGet":    !*fNoGet,
 		"IncludeFilter": !*fNoFilter,
 	}
 
@@ -107,8 +109,10 @@ var funcTemplate = `package freshservice
 {{if .IncludeList}}
 import (
 	"context"
+	{{if .IncludeGet }}"fmt"{{end}}
 	"net/http"
 	"net/url"
+	{{if .IncludeGet }}"path"{{end}}
 )
 {{end}}
 
@@ -165,5 +169,29 @@ func (d *{{Export (Plural .Endpoint) }}ServiceClient) List(ctx context.Context{{
 
 	return res.List, HasNextPage(resp), nil
 }
+
+{{if .IncludeGet}}
+// Get a specific {{ .Endpoint }}
+func (d *{{Export (Plural .Endpoint) }}ServiceClient) Get(ctx context.Context, id int) (*{{Export .Endpoint}}Details, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join({{ .Endpoint}}URL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &{{Export .Endpoint}}{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
+}
+{{end}}
 {{end}}
 `

@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const departmentURL = "/api/v2/departments"
@@ -55,4 +57,26 @@ func (d *DepartmentsServiceClient) List(ctx context.Context, filter QueryFilter)
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific department
+func (d *DepartmentsServiceClient) Get(ctx context.Context, id int) (*DepartmentDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(departmentURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Department{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

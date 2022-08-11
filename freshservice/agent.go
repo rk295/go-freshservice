@@ -22,27 +22,6 @@ type AgentsService interface {
 	ConvertToRequester(context.Context, int) (*AgentDetails, error)
 }
 
-// Get a specific Freshservice agent
-func (as *AgentsServiceClient) Get(ctx context.Context, id int) (*AgentDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   as.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", agentURL, id),
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &Agent{}
-	if _, err := as.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-
-	return &res.Details, nil
-}
-
 // Create a new Freshserrvice agent
 func (as *AgentsServiceClient) Create(ctx context.Context, ad *AgentDetails) (*AgentDetails, error) {
 	url := &url.URL{

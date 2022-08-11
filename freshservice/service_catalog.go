@@ -18,10 +18,10 @@ var (
 // ServiceCatalogsService is an interface for interacting with
 // the service catalog endpoints of the Freshservice API
 type ServiceCatalogsService interface {
-	List(context.Context) ([]ServiceCatalogDetails, string, error)
 	Categories(context.Context) ([]ServiceCategory, error)
 	CreateRequest(context.Context, int, *ServiceRequestOptions) (*ServiceRequestResponse, error)
 	Get(context.Context, int) (*ServiceCatalogDetails, error)
+	List(context.Context) ([]ServiceCatalogDetails, string, error)
 }
 
 // Categories will list all service catalog item categories in freshservice
@@ -43,27 +43,6 @@ func (sc *ServiceCatalogsServiceClient) Categories(ctx context.Context) ([]Servi
 	}
 
 	return res.List, nil
-}
-
-// Get a specific service category item from Freshservice via the item's ID
-func (sc *ServiceCatalogsServiceClient) Get(ctx context.Context, id int) (*ServiceCatalogDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   sc.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", serviceCatalogItemURL, id),
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &ServiceCatalog{}
-	if _, err := sc.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-
-	return &res.Details, nil
 }
 
 // CreateRequest will create a new Freshservice Service Request

@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const announcementURL = "/api/v2/announcements"
@@ -55,4 +57,26 @@ func (d *AnnouncementsServiceClient) List(ctx context.Context, filter QueryFilte
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific announcement
+func (d *AnnouncementsServiceClient) Get(ctx context.Context, id int) (*AnnouncementDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(announcementURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Announcement{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

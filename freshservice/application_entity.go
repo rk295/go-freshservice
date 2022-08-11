@@ -7,16 +7,16 @@ type ApplicationDetails struct {
 	AdditionalData    AdditionalData `json:"additional_data"`
 	UserCount         int            `json:"user_count"`
 	InstallationCount int            `json:"installation_count"`
-	ID                int64          `json:"id"`
+	ID                int            `json:"id"`
 	Name              string         `json:"name"`
 	Description       interface{}    `json:"description"`
 	Notes             interface{}    `json:"notes"`
-	PublisherID       int64          `json:"publisher_id"`
+	PublisherID       int            `json:"publisher_id"`
 	CreatedAt         time.Time      `json:"created_at"`
 	UpdatedAt         time.Time      `json:"updated_at"`
 	ApplicationType   string         `json:"application_type"`
 	Status            string         `json:"status"`
-	ManagedByID       int64          `json:"managed_by_id"`
+	ManagedByID       int            `json:"managed_by_id"`
 	Category          string         `json:"category"`
 	Sources           []interface{}  `json:"sources"`
 }

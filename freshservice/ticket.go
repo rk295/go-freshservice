@@ -15,7 +15,7 @@ type TicketsService interface {
 	List(context.Context, QueryFilter) ([]TicketDetails, string, error)
 	Create(context.Context, *TicketDetails) (*TicketDetails, error)
 	CreateWithAttachment() (*Ticket, error)
-	Get(context.Context, int, QueryFilter) (*TicketDetails, error)
+	Get(context.Context, int) (*TicketDetails, error)
 	Update(context.Context, int, *TicketDetails) (*TicketDetails, error)
 	Delete(context.Context, int) error
 }
@@ -51,32 +51,6 @@ func (t *TicketsServiceClient) Create(ctx context.Context, td *TicketDetails) (*
 // CreateWithAttachment creates new Freshservice ticket with attachment
 func (t *TicketsServiceClient) CreateWithAttachment() (*Ticket, error) {
 	return nil, nil
-}
-
-// Get a specific Freshservice ticket by Ticket ID. By default, certain
-// fields such as conversations, tags and requester email will not be included
-// in the response. They can be retrieved via the embedding functionality.
-func (t *TicketsServiceClient) Get(ctx context.Context, id int, filter QueryFilter) (*TicketDetails, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   t.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", ticketURL, id),
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
-	res := &Ticket{}
-	if _, err := t.client.makeRequest(req, res); err != nil {
-		return nil, err
-	}
-	return &res.Details, nil
 }
 
 // Update a Freshservice ticket

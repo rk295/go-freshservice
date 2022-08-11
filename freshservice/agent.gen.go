@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const agentURL = "/api/v2/agents"
@@ -55,4 +57,26 @@ func (d *AgentsServiceClient) List(ctx context.Context, filter QueryFilter) ([]A
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific agent
+func (d *AgentsServiceClient) Get(ctx context.Context, id int) (*AgentDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(agentURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Agent{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

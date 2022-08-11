@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const businessHourURL = "/api/v2/business_hours"
@@ -51,4 +53,26 @@ func (d *BusinessHoursServiceClient) List(ctx context.Context) ([]BusinessHourDe
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific businessHour
+func (d *BusinessHoursServiceClient) Get(ctx context.Context, id int) (*BusinessHourDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(businessHourURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &BusinessHour{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

@@ -4,8 +4,10 @@ package freshservice
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
 const applicationURL = "/api/v2/applications"
@@ -55,4 +57,26 @@ func (d *ApplicationsServiceClient) List(ctx context.Context, filter QueryFilter
 	}
 
 	return res.List, HasNextPage(resp), nil
+}
+
+// Get a specific application
+func (d *ApplicationsServiceClient) Get(ctx context.Context, id int) (*ApplicationDetails, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   path.Join(applicationURL, fmt.Sprintf("%d", id)),
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	res := &Application{}
+	if _, err = d.client.makeRequest(req, res); err != nil {
+		return nil, err
+	}
+
+	return &res.Details, nil
 }

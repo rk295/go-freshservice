@@ -13,4 +13,4 @@ package freshservice
 //go:generate gen --endpoint requester requester.gen.go
 //go:generate gen --endpoint serviceCatalog --api-endpoint service_catalog --json-key service_items --no-filter service_catalog.gen.go
 //go:generate gen --endpoint ticket ticket.gen.go
-//go:generate gen --endpoint task --no-list task.gen.go
+//go:generate gen --endpoint task --no-list --no-get task.gen.go
