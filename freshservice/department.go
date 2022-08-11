@@ -14,33 +14,6 @@ type DepartmentsService interface {
 	Get(context.Context, int, QueryFilter) (*DepartmentDetails, error)
 }
 
-// List all Departments
-func (d *DepartmentsServiceClient) List(ctx context.Context, filter QueryFilter) ([]DepartmentDetails, string, error) {
-
-	url := &url.URL{
-		Scheme: "https",
-		Host:   d.client.Domain,
-		Path:   departmentURL,
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, "", err
-	}
-
-	res := &Departments{}
-	resp, err := d.client.makeRequest(req, res)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return res.List, HasNextPage(resp), nil
-}
-
 // Get a specific department
 func (d *DepartmentsServiceClient) Get(ctx context.Context, deptID int, filter QueryFilter) (*DepartmentDetails, error) {
 

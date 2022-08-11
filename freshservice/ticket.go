@@ -20,34 +20,6 @@ type TicketsService interface {
 	Delete(context.Context, int) error
 }
 
-// List all Freshservice tickets
-// All the below requests are paginated to return only 30 tickets per page.
-// Append the parameter "page=[:page_no]" in the url to traverse through pages.
-func (t *TicketsServiceClient) List(ctx context.Context, filter QueryFilter) ([]TicketDetails, string, error) {
-	url := &url.URL{
-		Scheme: "https",
-		Host:   t.client.Domain,
-		Path:   ticketURL,
-	}
-
-	if filter != nil {
-		url.RawQuery = filter.QueryString()
-	}
-
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
-	if err != nil {
-		return nil, "", err
-	}
-
-	res := &Tickets{}
-	resp, err := t.client.makeRequest(req, res)
-	if err != nil {
-		return nil, "", err
-	}
-
-	return res.List, HasNextPage(resp), nil
-}
-
 // Create a new Freshservice ticket
 func (t *TicketsServiceClient) Create(ctx context.Context, td *TicketDetails) (*TicketDetails, error) {
 	url := &url.URL{

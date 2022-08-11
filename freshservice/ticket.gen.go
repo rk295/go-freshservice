@@ -2,6 +2,12 @@ package freshservice
 
 // Generated Code DO NOT EDIT
 
+import (
+	"context"
+	"net/http"
+	"net/url"
+)
+
 const ticketURL = "/api/v2/tickets"
 
 // Tickets holds a list of Freshservice Ticket details
@@ -22,4 +28,31 @@ func (fs *Client) Tickets() TicketsService {
 // TicketsServiceClient facilitates requests with the TicketsService methods
 type TicketsServiceClient struct {
 	client *Client
+}
+
+// List all tickets
+func (d *TicketsServiceClient) List(ctx context.Context, filter QueryFilter) ([]TicketDetails, string, error) {
+
+	url := &url.URL{
+		Scheme: "https",
+		Host:   d.client.Domain,
+		Path:   ticketURL,
+	}
+
+	if filter != nil {
+		url.RawQuery = filter.QueryString()
+	}
+
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
+	if err != nil {
+		return nil, "", err
+	}
+
+	res := &Tickets{}
+	resp, err := d.client.makeRequest(req, res)
+	if err != nil {
+		return nil, "", err
+	}
+
+	return res.List, HasNextPage(resp), nil
 }
