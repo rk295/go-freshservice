@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	token := os.Getenv("TOKEN")
-	domain := os.Getenv("DOMAIN")
+	token := os.Getenv(fs.FreshserviceAPITokenEnvName)
+	domain := os.Getenv(fs.FreshserviceCompanyDomainEnvName)
 	ctx := context.Background()
 	api, err := fs.New(ctx, domain, token, nil)
 	if err != nil {
