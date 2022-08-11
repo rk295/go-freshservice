@@ -3,15 +3,19 @@ package freshservice
 import (
 	"context"
 	"net/http"
+	"os"
 	"testing"
 
 	"github.com/jarcoal/httpmock"
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGetBusinessHours(t *testing.T) {
+func TestMain(m *testing.M) {
 	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
+	os.Exit(m.Run())
+}
+
+func TestGetBusinessHours(t *testing.T) {
 	ctx := context.Background()
 
 	r, err := readTestData("business-hours.json")
@@ -30,8 +34,6 @@ func TestGetBusinessHours(t *testing.T) {
 }
 
 func TestGetSingleBusinessHours(t *testing.T) {
-	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
 	ctx := context.Background()
 
 	r, err := readTestData("business-hours-single.json")
