@@ -9,13 +9,9 @@ import (
 	"net/url"
 )
 
-/*
-NOTE: The tasks methods are related to the ticket methods and use the ticket endpoint
-*/
-
-// TaskService is an interface for interacting with
+// TasksService is an interface for interacting with
 // the task endpoints of the Freshservice API
-type TaskService interface {
+type TasksService interface {
 	List(context.Context, int) ([]TaskDetails, error)
 	Create(context.Context, int, *TaskDetails) (*TaskDetails, error)
 	Get(context.Context, int, int) (*TaskDetails, error)
@@ -23,13 +19,8 @@ type TaskService interface {
 	Delete(context.Context, int, int) error
 }
 
-// TaskServiceClient facilitates requests with the TicketService methods
-type TaskServiceClient struct {
-	client *Client
-}
-
 // List all tasks assigned to a given ticket ID
-func (c *TaskServiceClient) List(ctx context.Context, tickID int) ([]TaskDetails, error) {
+func (c *TasksServiceClient) List(ctx context.Context, tickID int) ([]TaskDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
@@ -51,7 +42,7 @@ func (c *TaskServiceClient) List(ctx context.Context, tickID int) ([]TaskDetails
 }
 
 // Get a specific task assigned to a given ticket ID
-func (c *TaskServiceClient) Get(ctx context.Context, tickID int, tid int) (*TaskDetails, error) {
+func (c *TasksServiceClient) Get(ctx context.Context, tickID int, tid int) (*TaskDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
@@ -72,7 +63,7 @@ func (c *TaskServiceClient) Get(ctx context.Context, tickID int, tid int) (*Task
 }
 
 // Create a task on a given ticket by ID
-func (c *TaskServiceClient) Create(ctx context.Context, tickID int, td *TaskDetails) (*TaskDetails, error) {
+func (c *TasksServiceClient) Create(ctx context.Context, tickID int, td *TaskDetails) (*TaskDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
@@ -100,7 +91,7 @@ func (c *TaskServiceClient) Create(ctx context.Context, tickID int, td *TaskDeta
 }
 
 // Update a specific task for a given ticket ID
-func (c *TaskServiceClient) Update(ctx context.Context, tickID int, tid int, td *TaskDetails) (*TaskDetails, error) {
+func (c *TasksServiceClient) Update(ctx context.Context, tickID int, tid int, td *TaskDetails) (*TaskDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
@@ -129,7 +120,7 @@ func (c *TaskServiceClient) Update(ctx context.Context, tickID int, tid int, td 
 
 // Delete a specific task for a given ticket ID
 // Note: Deleted tasks are permanently lost. You can't retrieve them once it's get deleted.
-func (c *TaskServiceClient) Delete(ctx context.Context, tickID int, tid int) error {
+func (c *TasksServiceClient) Delete(ctx context.Context, tickID int, tid int) error {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,

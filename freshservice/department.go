@@ -7,8 +7,6 @@ import (
 	"net/url"
 )
 
-const departmentURL = "/api/v2/departments"
-
 // DepartmentsService is an interface for interacting with the department
 // endpoints of the Freshservice API
 type DepartmentsService interface {
@@ -16,13 +14,8 @@ type DepartmentsService interface {
 	Get(context.Context, int, QueryFilter) (*DepartmentDetails, error)
 }
 
-// DepartmentServiceClient facilitates requests with the DepartmentService methods
-type DepartmentServiceClient struct {
-	client *Client
-}
-
 // List all Departments
-func (d *DepartmentServiceClient) List(ctx context.Context, filter QueryFilter) ([]DepartmentDetails, string, error) {
+func (d *DepartmentsServiceClient) List(ctx context.Context, filter QueryFilter) ([]DepartmentDetails, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -49,7 +42,7 @@ func (d *DepartmentServiceClient) List(ctx context.Context, filter QueryFilter) 
 }
 
 // Get a specific department
-func (d *DepartmentServiceClient) Get(ctx context.Context, deptID int, filter QueryFilter) (*DepartmentDetails, error) {
+func (d *DepartmentsServiceClient) Get(ctx context.Context, deptID int, filter QueryFilter) (*DepartmentDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",

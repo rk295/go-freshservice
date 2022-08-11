@@ -7,22 +7,15 @@ import (
 	"net/url"
 )
 
-const locationURL = "/api/v2/locations"
-
-// LocationService is an interface for interacting with the location
+// LocationsService is an interface for interacting with the location
 // endpoints of the Freshservice API
 type LocationsService interface {
 	List(context.Context, QueryFilter) ([]LocationDetails, string, error)
 	Get(context.Context, int, QueryFilter) (*LocationDetails, error)
 }
 
-// locationServiceClient facilitates requests with the locationService methods
-type locationServiceClient struct {
-	client *Client
-}
-
 // List all locations
-func (d *locationServiceClient) List(ctx context.Context, filter QueryFilter) ([]LocationDetails, string, error) {
+func (d *LocationsServiceClient) List(ctx context.Context, filter QueryFilter) ([]LocationDetails, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -49,7 +42,7 @@ func (d *locationServiceClient) List(ctx context.Context, filter QueryFilter) ([
 }
 
 // Get a specific location
-func (d *locationServiceClient) Get(ctx context.Context, locID int, filter QueryFilter) (*LocationDetails, error) {
+func (d *LocationsServiceClient) Get(ctx context.Context, locID int, filter QueryFilter) (*LocationDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",

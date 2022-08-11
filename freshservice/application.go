@@ -8,11 +8,9 @@ import (
 	"strings"
 )
 
-const applicationURL = "/api/v2/applications"
-
-// ApplicationService is an interface for interacting with
+// ApplicationsService is an interface for interacting with
 // the application endpoints of the Freshservice API
-type ApplicationService interface {
+type ApplicationsService interface {
 	List(context.Context, QueryFilter) ([]ApplicationDetails, string, error)
 	Get(context.Context, int64) (*ApplicationDetails, error)
 	ListLicenses(context.Context, int64) ([]LicensesDetails, error)
@@ -20,15 +18,10 @@ type ApplicationService interface {
 	ListInstallations(context.Context, int64) ([]ApplicationInstallationDetails, error)
 }
 
-// ApplicationServiceClient facilitates requests with the TicketService methods
-type ApplicationServiceClient struct {
-	client *Client
-}
-
 // List all application
 // All the below requests are paginated to return only 30 tickets per page.
 // Append the parameter "page=[:page_no]" in the url to traverse through pages.
-func (a *ApplicationServiceClient) List(ctx context.Context, filter QueryFilter) ([]ApplicationDetails, string, error) {
+func (a *ApplicationsServiceClient) List(ctx context.Context, filter QueryFilter) ([]ApplicationDetails, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -55,7 +48,7 @@ func (a *ApplicationServiceClient) List(ctx context.Context, filter QueryFilter)
 }
 
 // Get a specific all application
-func (a *ApplicationServiceClient) Get(ctx context.Context, appID int64) (*ApplicationDetails, error) {
+func (a *ApplicationsServiceClient) Get(ctx context.Context, appID int64) (*ApplicationDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -77,7 +70,7 @@ func (a *ApplicationServiceClient) Get(ctx context.Context, appID int64) (*Appli
 }
 
 // ListLicenses lists all the licenses for an application
-func (a *ApplicationServiceClient) ListLicenses(ctx context.Context, appID int64) ([]LicensesDetails, error) {
+func (a *ApplicationsServiceClient) ListLicenses(ctx context.Context, appID int64) ([]LicensesDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -99,7 +92,7 @@ func (a *ApplicationServiceClient) ListLicenses(ctx context.Context, appID int64
 }
 
 // ListUsers lists all the users of an application
-func (a *ApplicationServiceClient) ListUsers(ctx context.Context, appID int64) ([]ApplicationUserDetails, error) {
+func (a *ApplicationsServiceClient) ListUsers(ctx context.Context, appID int64) ([]ApplicationUserDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -121,7 +114,7 @@ func (a *ApplicationServiceClient) ListUsers(ctx context.Context, appID int64) (
 }
 
 // ListInstallations lists all the installations of an application
-func (a *ApplicationServiceClient) ListInstallations(ctx context.Context, appID int64) ([]ApplicationInstallationDetails, error) {
+func (a *ApplicationsServiceClient) ListInstallations(ctx context.Context, appID int64) ([]ApplicationInstallationDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",

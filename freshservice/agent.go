@@ -9,11 +9,9 @@ import (
 	"net/url"
 )
 
-const agentURL = "/api/v2/agents"
-
-// AgentService is an interface for interacting with
+// AgentsService is an interface for interacting with
 // the agent endpoints of the Freshservice API
-type AgentService interface {
+type AgentsService interface {
 	List(context.Context, QueryFilter) ([]AgentDetails, string, error)
 	Create(context.Context, *AgentDetails) (*AgentDetails, error)
 	Get(context.Context, int) (*AgentDetails, error)
@@ -24,13 +22,8 @@ type AgentService interface {
 	ConvertToRequester(context.Context, int) (*AgentDetails, error)
 }
 
-// AgentServiceClient facilitates requests with the AgentService methods
-type AgentServiceClient struct {
-	client *Client
-}
-
 // List all freshservice agents
-func (as *AgentServiceClient) List(ctx context.Context, filter QueryFilter) ([]AgentDetails, string, error) {
+func (as *AgentsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AgentDetails, string, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -56,7 +49,7 @@ func (as *AgentServiceClient) List(ctx context.Context, filter QueryFilter) ([]A
 }
 
 // Get a specific Freshservice agent
-func (as *AgentServiceClient) Get(ctx context.Context, id int) (*AgentDetails, error) {
+func (as *AgentsServiceClient) Get(ctx context.Context, id int) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -77,7 +70,7 @@ func (as *AgentServiceClient) Get(ctx context.Context, id int) (*AgentDetails, e
 }
 
 // Create a new Freshserrvice agent
-func (as *AgentServiceClient) Create(ctx context.Context, ad *AgentDetails) (*AgentDetails, error) {
+func (as *AgentsServiceClient) Create(ctx context.Context, ad *AgentDetails) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -105,7 +98,7 @@ func (as *AgentServiceClient) Create(ctx context.Context, ad *AgentDetails) (*Ag
 }
 
 // Update a Freshservice agent
-func (as *AgentServiceClient) Update(ctx context.Context, id int, ad *AgentDetails) (*AgentDetails, error) {
+func (as *AgentsServiceClient) Update(ctx context.Context, id int, ad *AgentDetails) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -134,7 +127,7 @@ func (as *AgentServiceClient) Update(ctx context.Context, id int, ad *AgentDetai
 }
 
 // Delete a Freshservice agent
-func (as *AgentServiceClient) Delete(ctx context.Context, id int) error {
+func (as *AgentsServiceClient) Delete(ctx context.Context, id int) error {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -154,7 +147,7 @@ func (as *AgentServiceClient) Delete(ctx context.Context, id int) error {
 }
 
 // Deactivate a Frehservice agent (does not delete)
-func (as *AgentServiceClient) Deactivate(ctx context.Context, id int) (*AgentDetails, error) {
+func (as *AgentsServiceClient) Deactivate(ctx context.Context, id int) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -175,7 +168,7 @@ func (as *AgentServiceClient) Deactivate(ctx context.Context, id int) (*AgentDet
 }
 
 // Reactivate a Freshserrvice agent
-func (as *AgentServiceClient) Reactivate(ctx context.Context, id int) (*AgentDetails, error) {
+func (as *AgentsServiceClient) Reactivate(ctx context.Context, id int) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,
@@ -196,7 +189,7 @@ func (as *AgentServiceClient) Reactivate(ctx context.Context, id int) (*AgentDet
 }
 
 // ConvertToRequester will convert a Freshservice agent to a requester
-func (as *AgentServiceClient) ConvertToRequester(ctx context.Context, id int) (*AgentDetails, error) {
+func (as *AgentsServiceClient) ConvertToRequester(ctx context.Context, id int) (*AgentDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   as.client.Domain,

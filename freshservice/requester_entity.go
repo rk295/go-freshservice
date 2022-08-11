@@ -6,16 +6,6 @@ import (
 	"strings"
 )
 
-// Requesters holds a list of Freshservice task details
-type Requesters struct {
-	List []RequesterDetails `json:"requesters"`
-}
-
-// Requester holds the details of a specific Freshservice requster
-type Requester struct {
-	Details RequesterDetails `json:"requester"`
-}
-
 // RequesterDetails are the details related to a specific task in Freshservice
 type RequesterDetails struct {
 	ID                                        int                   `json:"id"`

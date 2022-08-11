@@ -5,16 +5,6 @@ import (
 	"time"
 )
 
-// Announcements represents a list of announcements in Freshservice
-type Announcements struct {
-	List []AnnouncementDetails `json:"announcements"`
-}
-
-// Announcement represents an announcment in Freshservice
-type Announcement struct {
-	Details AnnouncementDetails `json:"announcement"`
-}
-
 // AnnouncementDetails represents the specific details about a Freshservice announcement
 type AnnouncementDetails struct {
 	Title            string    `json:"title"`

@@ -7,16 +7,6 @@ import (
 	"time"
 )
 
-// Locations holds a list of Freshservice Location details
-type Locations struct {
-	List []LocationDetails `json:"locations"`
-}
-
-// Location holds the details of a specific Freshservice Location
-type Location struct {
-	Details LocationDetails `json:"location"`
-}
-
 // LocationDetails are the details related to a specific Location in Freshservice
 type LocationDetails struct {
 	ID               int       `json:"id"`

@@ -2,15 +2,15 @@ package freshservice
 
 import "time"
 
-// Applications holds a list of Freshservice application details
-type Applications struct {
-	List []ApplicationDetails `json:"applications"`
-}
+// // Applications holds a list of Freshservice application details
+// type Applications struct {
+// 	List []ApplicationDetails `json:"applications"`
+// }
 
-// Application holds the details of a specific Freshservice application
-type Application struct {
-	Details ApplicationDetails `json:"application"`
-}
+// // Application holds the details of a specific Freshservice application
+// type Application struct {
+// 	Details ApplicationDetails `json:"application"`
+// }
 
 // ApplicationDetails are the details related to a specific application in Freshservice
 type ApplicationDetails struct {

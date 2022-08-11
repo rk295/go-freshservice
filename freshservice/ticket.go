@@ -9,11 +9,9 @@ import (
 	"net/url"
 )
 
-const ticketURL = "/api/v2/tickets"
-
-// TicketService is an interface for interacting with
+// TicketsService is an interface for interacting with
 // the ticket endpoints of the Freshservice API
-type TicketService interface {
+type TicketsService interface {
 	List(context.Context, QueryFilter) ([]TicketDetails, string, error)
 	Create(context.Context, *TicketDetails) (*TicketDetails, error)
 	CreateWithAttachment() (*Ticket, error)
@@ -22,15 +20,10 @@ type TicketService interface {
 	Delete(context.Context, int) error
 }
 
-// TicketServiceClient facilitates requests with the TicketService methods
-type TicketServiceClient struct {
-	client *Client
-}
-
 // List all Freshservice tickets
 // All the below requests are paginated to return only 30 tickets per page.
 // Append the parameter "page=[:page_no]" in the url to traverse through pages.
-func (t *TicketServiceClient) List(ctx context.Context, filter QueryFilter) ([]TicketDetails, string, error) {
+func (t *TicketsServiceClient) List(ctx context.Context, filter QueryFilter) ([]TicketDetails, string, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   t.client.Domain,
@@ -56,7 +49,7 @@ func (t *TicketServiceClient) List(ctx context.Context, filter QueryFilter) ([]T
 }
 
 // Create a new Freshservice ticket
-func (t *TicketServiceClient) Create(ctx context.Context, td *TicketDetails) (*TicketDetails, error) {
+func (t *TicketsServiceClient) Create(ctx context.Context, td *TicketDetails) (*TicketDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   t.client.Domain,
@@ -84,14 +77,14 @@ func (t *TicketServiceClient) Create(ctx context.Context, td *TicketDetails) (*T
 }
 
 // CreateWithAttachment creates new Freshservice ticket with attachment
-func (t *TicketServiceClient) CreateWithAttachment() (*Ticket, error) {
+func (t *TicketsServiceClient) CreateWithAttachment() (*Ticket, error) {
 	return nil, nil
 }
 
 // Get a specific Freshservice ticket by Ticket ID. By default, certain
 // fields such as conversations, tags and requester email will not be included
 // in the response. They can be retrieved via the embedding functionality.
-func (t *TicketServiceClient) Get(ctx context.Context, id int, filter QueryFilter) (*TicketDetails, error) {
+func (t *TicketsServiceClient) Get(ctx context.Context, id int, filter QueryFilter) (*TicketDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   t.client.Domain,
@@ -115,7 +108,7 @@ func (t *TicketServiceClient) Get(ctx context.Context, id int, filter QueryFilte
 }
 
 // Update a Freshservice ticket
-func (t *TicketServiceClient) Update(ctx context.Context, id int, details *TicketDetails) (*TicketDetails, error) {
+func (t *TicketsServiceClient) Update(ctx context.Context, id int, details *TicketDetails) (*TicketDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   t.client.Domain,
@@ -142,7 +135,7 @@ func (t *TicketServiceClient) Update(ctx context.Context, id int, details *Ticke
 }
 
 // Delete Freshservice ticket
-func (t *TicketServiceClient) Delete(ctx context.Context, id int) error {
+func (t *TicketsServiceClient) Delete(ctx context.Context, id int) error {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   t.client.Domain,

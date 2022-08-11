@@ -7,22 +7,15 @@ import (
 	"net/url"
 )
 
-const requesterURL = "/api/v2/requesters"
-
-// RequesterService is an interface for interacting with
+// RequestersService is an interface for interacting with
 // the requester endpoints of the Freshservice API
-type RequesterService interface {
+type RequestersService interface {
 	List(context.Context, QueryFilter) ([]RequesterDetails, string, error)
 	Get(context.Context, int, QueryFilter) (*RequesterDetails, error)
 }
 
-// RequesterServiceClient facilitates requests with the Freshservice requester methods
-type RequesterServiceClient struct {
-	client *Client
-}
-
 // List all Freshservice requesters
-func (r *RequesterServiceClient) List(ctx context.Context, filter QueryFilter) ([]RequesterDetails, string, error) {
+func (r *RequestersServiceClient) List(ctx context.Context, filter QueryFilter) ([]RequesterDetails, string, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   r.client.Domain,
@@ -47,7 +40,7 @@ func (r *RequesterServiceClient) List(ctx context.Context, filter QueryFilter) (
 }
 
 // Get a specific requester
-func (r *RequesterServiceClient) Get(ctx context.Context, reqID int, filter QueryFilter) (*RequesterDetails, error) {
+func (r *RequestersServiceClient) Get(ctx context.Context, reqID int, filter QueryFilter) (*RequesterDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   r.client.Domain,

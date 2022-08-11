@@ -5,18 +5,8 @@ import (
 	"time"
 )
 
-// ServiceCatalog represents a list of Freshservice service catalog items
-type ServiceCatalog struct {
-	Items []ServiceCatalogItemDetails `json:"service_items"`
-}
-
-// ServiceCatalogItem represents a specifc Freshservice service catalog item
-type ServiceCatalogItem struct {
-	Details ServiceCatalogItemDetails `json:"service_item"`
-}
-
-// ServiceCatalogItemDetails holds the details for a specific Freshservice service catalog item
-type ServiceCatalogItemDetails struct {
+// ServiceCatalogDetails holds the details for a specific Freshservice service catalog item
+type ServiceCatalogDetails struct {
 	ID                     int               `json:"id"`
 	CreatedAt              time.Time         `json:"created_at"`
 	UpdatedAt              time.Time         `json:"updated_at"`

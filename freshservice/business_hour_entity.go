@@ -2,18 +2,8 @@ package freshservice
 
 import "time"
 
-//BusinessHours holds the Business Hours Configurations in Freshservice
-type BusinessHours struct {
-	List []BusinessHoursDetails `json:"business_hours"`
-}
-
-// BusinessHoursConfig holds a configuration for business hours in Freshservice
-type BusinessHoursConfig struct {
-	Details BusinessHoursDetails `json:"business_hours"`
-}
-
-// BusinessHoursDetails holds a configuration for business hours in Freshservice
-type BusinessHoursDetails struct {
+// BusinessHourDetails holds a configuration for business hours in Freshservice
+type BusinessHourDetails struct {
 	ID               int              `json:"id"`
 	CreatedAt        time.Time        `json:"created_at"`
 	UpdatedAt        time.Time        `json:"updated_at"`

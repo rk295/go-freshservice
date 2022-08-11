@@ -7,16 +7,6 @@ import (
 	"time"
 )
 
-// Assets holds a list of Freshservice asset details
-type Assets struct {
-	List []AssetDetails `json:"assets"`
-}
-
-// Asset holds the details of a specific Freshservice asset
-type Asset struct {
-	Details AssetDetails `json:"asset"`
-}
-
 // AssetDetails are the details related to a specific asset in Freshservice
 type AssetDetails struct {
 	AgentID      int64     `json:"agent_id"`

@@ -7,30 +7,26 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"path"
 )
 
-const (
-	serviceCatalogItemURL     = "/api/v2/service_catalog/items"
-	serviceCatalogCategoryURL = "/api/v2/service_catalog/categories"
+var (
+	serviceCatalogItemURL     = path.Join(serviceCatalogURL, "items")
+	serviceCatalogCategoryURL = path.Join(serviceCatalogURL, "categories")
 )
 
-// ServiceCatalogService is an interface for interacting with
+// ServiceCatalogsService is an interface for interacting with
 // the service catalog endpoints of the Freshservice API
-type ServiceCatalogService interface {
-	List(context.Context, QueryFilter) ([]ServiceCatalogItemDetails, error)
+type ServiceCatalogsService interface {
+	List(context.Context, QueryFilter) ([]ServiceCatalogDetails, error)
 	Categories(context.Context) ([]ServiceCategory, error)
 	CreateRequest(context.Context, int, *ServiceRequestOptions) (*ServiceRequestResponse, error)
-	Get(context.Context, int) (*ServiceCatalogItemDetails, error)
-}
-
-// ServiceCatalogServiceClient facilitates requests with the ServiceCatalogService methods
-type ServiceCatalogServiceClient struct {
-	client *Client
+	Get(context.Context, int) (*ServiceCatalogDetails, error)
 }
 
 // List all service category items in Freshservice
 // Optional filter: category_id=[category_id]
-func (sc *ServiceCatalogServiceClient) List(ctx context.Context, filter QueryFilter) ([]ServiceCatalogItemDetails, error) {
+func (sc *ServiceCatalogsServiceClient) List(ctx context.Context, filter QueryFilter) ([]ServiceCatalogDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   sc.client.Domain,
@@ -46,16 +42,16 @@ func (sc *ServiceCatalogServiceClient) List(ctx context.Context, filter QueryFil
 		return nil, err
 	}
 
-	res := &ServiceCatalog{}
+	res := &ServiceCatalogs{}
 	if _, err := sc.client.makeRequest(req, res); err != nil {
 		return nil, err
 	}
 
-	return res.Items, nil
+	return res.List, nil
 }
 
 // Categories will list all service catalog item categories in freshservice
-func (sc *ServiceCatalogServiceClient) Categories(ctx context.Context) ([]ServiceCategory, error) {
+func (sc *ServiceCatalogsServiceClient) Categories(ctx context.Context) ([]ServiceCategory, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   sc.client.Domain,
@@ -76,7 +72,7 @@ func (sc *ServiceCatalogServiceClient) Categories(ctx context.Context) ([]Servic
 }
 
 // Get a specific service category item from Freshservice via the item's ID
-func (sc *ServiceCatalogServiceClient) Get(ctx context.Context, id int) (*ServiceCatalogItemDetails, error) {
+func (sc *ServiceCatalogsServiceClient) Get(ctx context.Context, id int) (*ServiceCatalogDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   sc.client.Domain,
@@ -88,7 +84,7 @@ func (sc *ServiceCatalogServiceClient) Get(ctx context.Context, id int) (*Servic
 		return nil, err
 	}
 
-	res := &ServiceCatalogItem{}
+	res := &ServiceCatalog{}
 	if _, err := sc.client.makeRequest(req, res); err != nil {
 		return nil, err
 	}
@@ -97,7 +93,7 @@ func (sc *ServiceCatalogServiceClient) Get(ctx context.Context, id int) (*Servic
 }
 
 // CreateRequest will create a new Freshservice Service Request
-func (sc *ServiceCatalogServiceClient) CreateRequest(ctx context.Context, id int, sr *ServiceRequestOptions) (*ServiceRequestResponse, error) {
+func (sc *ServiceCatalogsServiceClient) CreateRequest(ctx context.Context, id int, sr *ServiceRequestOptions) (*ServiceRequestResponse, error) {
 	res := &ServiceRequestResponse{}
 
 	url := &url.URL{

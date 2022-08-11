@@ -9,11 +9,9 @@ import (
 	"net/url"
 )
 
-const announcementURL = "/api/v2/announcements"
-
-// AnnouncementService is an interface for interacting with
+// AnnouncementsService is an interface for interacting with
 // the announcement endpoints of the Freshservice API
-type AnnouncementService interface {
+type AnnouncementsService interface {
 	List(context.Context, QueryFilter) ([]AnnouncementDetails, error)
 	Get(context.Context, int) (*AnnouncementDetails, error)
 	Create(context.Context, *AnnouncementDetails) (*AnnouncementDetails, error)
@@ -21,13 +19,8 @@ type AnnouncementService interface {
 	Delete(context.Context, int) error
 }
 
-// AnnouncementServiceClient facilitates requests with the AnnouncementService methods
-type AnnouncementServiceClient struct {
-	client *Client
-}
-
 // List announcements in Freshservice
-func (a *AnnouncementServiceClient) List(ctx context.Context, filter QueryFilter) ([]AnnouncementDetails, error) {
+func (a *AnnouncementsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AnnouncementDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
@@ -51,7 +44,7 @@ func (a *AnnouncementServiceClient) List(ctx context.Context, filter QueryFilter
 }
 
 // Get a specific Freshservice announcement
-func (a *AnnouncementServiceClient) Get(ctx context.Context, id int) (*AnnouncementDetails, error) {
+func (a *AnnouncementsServiceClient) Get(ctx context.Context, id int) (*AnnouncementDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
@@ -72,7 +65,7 @@ func (a *AnnouncementServiceClient) Get(ctx context.Context, id int) (*Announcem
 }
 
 // Create a new announcement in Freshservice
-func (a *AnnouncementServiceClient) Create(ctx context.Context, details *AnnouncementDetails) (*AnnouncementDetails, error) {
+func (a *AnnouncementsServiceClient) Create(ctx context.Context, details *AnnouncementDetails) (*AnnouncementDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
@@ -100,7 +93,7 @@ func (a *AnnouncementServiceClient) Create(ctx context.Context, details *Announc
 }
 
 // Update an announcement in Freshservice
-func (a *AnnouncementServiceClient) Update(ctx context.Context, id int, details *AnnouncementDetails) (*AnnouncementDetails, error) {
+func (a *AnnouncementsServiceClient) Update(ctx context.Context, id int, details *AnnouncementDetails) (*AnnouncementDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
@@ -128,7 +121,7 @@ func (a *AnnouncementServiceClient) Update(ctx context.Context, id int, details 
 }
 
 // Delete an announcement in Freshservice
-func (a *AnnouncementServiceClient) Delete(ctx context.Context, id int) error {
+func (a *AnnouncementsServiceClient) Delete(ctx context.Context, id int) error {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,

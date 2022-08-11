@@ -6,16 +6,6 @@ import (
 	"time"
 )
 
-// Agents holds a list of Freshservice agents
-type Agents struct {
-	List []AgentDetails `json:"agents"`
-}
-
-// Agent holds the details of a specific Freshservice agent
-type Agent struct {
-	Details AgentDetails `json:"agent"`
-}
-
 // AgentDetails contains the details of a specific Freshservice agent
 type AgentDetails struct {
 	ID                    int         `json:"id"`

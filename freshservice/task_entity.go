@@ -2,16 +2,6 @@ package freshservice
 
 import "time"
 
-// Tasks holds a list of Freshservice task details
-type Tasks struct {
-	List []TaskDetails `json:"tasks"`
-}
-
-// Task holds the details of a specific Freshservice task
-type Task struct {
-	Details TaskDetails `json:"task"`
-}
-
 // TaskDetails are the details related to a specific task in Freshservice
 type TaskDetails struct {
 	ID           int       `json:"id"`

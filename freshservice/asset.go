@@ -7,24 +7,17 @@ import (
 	"net/url"
 )
 
-const assetURL = "/api/v2/assets"
-
-// AssetService is an interface for interacting with
+// AssetsService is an interface for interacting with
 // the asset endpoints of the Freshservice API
-type AssetService interface {
+type AssetsService interface {
 	List(context.Context, QueryFilter) ([]AssetDetails, string, error)
 	Get(context.Context, int, QueryFilter) (*AssetDetails, error)
-}
-
-// AssetServiceClient facilitates requests with the AssetService methods
-type AssetServiceClient struct {
-	client *Client
 }
 
 // List all Assets
 // Append the parameter "page=[:page_no]" in the url to traverse through pages.
 // TODO: this needs to have filtering added: https://api.freshservice.com/#filter_assets
-func (a *AssetServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetDetails, string, error) {
+func (a *AssetsServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetDetails, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
@@ -51,7 +44,7 @@ func (a *AssetServiceClient) List(ctx context.Context, filter QueryFilter) ([]As
 }
 
 // Get a specific asset
-func (a *AssetServiceClient) Get(ctx context.Context, assetID int, filter QueryFilter) (*AssetDetails, error) {
+func (a *AssetsServiceClient) Get(ctx context.Context, assetID int, filter QueryFilter) (*AssetDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",

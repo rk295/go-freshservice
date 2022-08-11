@@ -7,27 +7,20 @@ import (
 	"net/url"
 )
 
-const assetTypesURL = "/api/v2/asset_types"
-
-// AssetTypeService is an interface for interacting with
+// AssetTypesService is an interface for interacting with
 // the Asset Type endpoints of the Freshservice API
-type AssetTypeService interface {
+type AssetTypesService interface {
 	List(context.Context, QueryFilter) ([]AssetTypeDetails, string, error)
 	Get(context.Context, int, QueryFilter) (*AssetTypeDetails, error)
 }
 
-// AssetTypeServiceClient facilitates requests with the AssetTypeService methods
-type AssetTypeServiceClient struct {
-	client *Client
-}
-
 // List all AssetsTypes
-func (a *AssetTypeServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetTypeDetails, string, error) {
+func (a *AssetTypesServiceClient) List(ctx context.Context, filter QueryFilter) ([]AssetTypeDetails, string, error) {
 
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
-		Path:   assetTypesURL,
+		Path:   assetTypeURL,
 	}
 
 	if filter != nil {
@@ -49,12 +42,12 @@ func (a *AssetTypeServiceClient) List(ctx context.Context, filter QueryFilter) (
 }
 
 // Get a specific AssetsType
-func (a *AssetTypeServiceClient) Get(ctx context.Context, assetTypeID int, filter QueryFilter) (*AssetTypeDetails, error) {
+func (a *AssetTypesServiceClient) Get(ctx context.Context, assetTypeID int, filter QueryFilter) (*AssetTypeDetails, error) {
 
 	url := &url.URL{
 		Scheme: "https",
 		Host:   a.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", assetTypesURL, assetTypeID),
+		Path:   fmt.Sprintf("%s/%d", assetTypeURL, assetTypeID),
 	}
 
 	if filter != nil {

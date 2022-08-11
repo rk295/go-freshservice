@@ -7,26 +7,19 @@ import (
 	"net/url"
 )
 
-const businessHoursURL = "/api/v2/business_hours"
-
 // BusinessHoursService is an interface for interacting with
 // the business hours endpoints of the Freshservice API
 type BusinessHoursService interface {
-	List(context.Context) ([]BusinessHoursDetails, error)
-	Get(context.Context, int) (*BusinessHoursDetails, error)
-}
-
-// BusinessHoursServiceClient facilitates requests with the AnnouncementService methods
-type BusinessHoursServiceClient struct {
-	client *Client
+	List(context.Context) ([]BusinessHourDetails, error)
+	Get(context.Context, int) (*BusinessHourDetails, error)
 }
 
 // List all business hours configured in Freshservice
-func (c *BusinessHoursServiceClient) List(ctx context.Context) ([]BusinessHoursDetails, error) {
+func (c *BusinessHoursServiceClient) List(ctx context.Context) ([]BusinessHourDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
-		Path:   businessHoursURL,
+		Path:   businessHourURL,
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
@@ -43,11 +36,11 @@ func (c *BusinessHoursServiceClient) List(ctx context.Context) ([]BusinessHoursD
 }
 
 // Get a details for a specific business hour configuration in Freshservice
-func (c *BusinessHoursServiceClient) Get(ctx context.Context, id int) (*BusinessHoursDetails, error) {
+func (c *BusinessHoursServiceClient) Get(ctx context.Context, id int) (*BusinessHourDetails, error) {
 	url := &url.URL{
 		Scheme: "https",
 		Host:   c.client.Domain,
-		Path:   fmt.Sprintf("%s/%d", businessHoursURL, id),
+		Path:   fmt.Sprintf("%s/%d", businessHourURL, id),
 	}
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url.String(), nil)
@@ -55,7 +48,7 @@ func (c *BusinessHoursServiceClient) Get(ctx context.Context, id int) (*Business
 		return nil, err
 	}
 
-	res := &BusinessHoursConfig{}
+	res := &BusinessHour{}
 	if _, err := c.client.makeRequest(req, res); err != nil {
 		return nil, err
 	}

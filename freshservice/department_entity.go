@@ -6,16 +6,6 @@ import (
 	"strings"
 )
 
-// Departments holds a list of Freshservice department details
-type Departments struct {
-	List []DepartmentDetails `json:"departments"`
-}
-
-// Department holds the details of a specific Freshservice department
-type Department struct {
-	Details DepartmentDetails `json:"department"`
-}
-
 // DepartmentDetails are the details related to a specific department in Freshservice
 type DepartmentDetails struct {
 	ID           int                           `json:"id"`
@@ -52,12 +42,14 @@ func (opts *DepartmentListOptions) QueryString() string {
 	}
 
 	filterStr := []string{}
-	if opts.FilterBy.Name != nil {
-		filterStr = append(filterStr, fmt.Sprintf("name:'%s'", *opts.FilterBy.Name))
-	}
+	if opts.FilterBy != nil {
+		if opts.FilterBy.Name != nil {
+			filterStr = append(filterStr, fmt.Sprintf("name:'%s'", *opts.FilterBy.Name))
+		}
+		filter := fmt.Sprintf("query=%s", url.PathEscape("\""+strings.Join(filterStr, " AND ")+"\""))
+		qs = append(qs, filter)
 
-	filter := fmt.Sprintf("query=%s", url.PathEscape("\""+strings.Join(filterStr, " AND ")+"\""))
-	qs = append(qs, filter)
+	}
 
 	return strings.Join(qs, "&")
 }
