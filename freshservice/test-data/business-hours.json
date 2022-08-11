@@ -1,0 +1,77 @@
+{
+    "business_hours": [
+        {
+            "id": 51000010610,
+            "created_at": "2022-01-11T10:19:14Z",
+            "updated_at": "2022-01-11T20:01:30Z",
+            "name": "Default",
+            "description": "Default Business Calendar",
+            "is_default": true,
+            "time_zone": "London",
+            "service_desk_hours": {
+                "monday": {
+                    "beginning_of_workday": "09:00",
+                    "end_of_workday": "17:00"
+                },
+                "tuesday": {
+                    "beginning_of_workday": "09:00",
+                    "end_of_workday": "17:00"
+                },
+                "wednesday": {
+                    "beginning_of_workday": "09:00",
+                    "end_of_workday": "17:00"
+                },
+                "thursday": {
+                    "beginning_of_workday": "09:00",
+                    "end_of_workday": "17:00"
+                },
+                "friday": {
+                    "beginning_of_workday": "09:00",
+                    "end_of_workday": "17:00"
+                }
+            },
+            "list_of_holidays": [
+                {
+                    "holiday_date": "--01-16",
+                    "holiday_name": "Birthday of Martin Luther King Jr"
+                },
+                {
+                    "holiday_date": "--02-20",
+                    "holiday_name": "Washington’s Birthday"
+                },
+                {
+                    "holiday_date": "--05-28",
+                    "holiday_name": "Memorial Day"
+                },
+                {
+                    "holiday_date": "--07-04",
+                    "holiday_name": "Independence Day"
+                },
+                {
+                    "holiday_date": "--09-03",
+                    "holiday_name": "Labor Day"
+                },
+                {
+                    "holiday_date": "--10-08",
+                    "holiday_name": "Columbus Day"
+                },
+                {
+                    "holiday_date": "--11-11",
+                    "holiday_name": "Veterans Day"
+                },
+                {
+                    "holiday_date": "--11-22",
+                    "holiday_name": "Thanksgiving Day"
+                },
+                {
+                    "holiday_date": "--12-25",
+                    "holiday_name": "Christmas Day"
+                },
+                {
+                    "holiday_date": "--01-01",
+                    "holiday_name": "New Year’s Day"
+                }
+            ]
+        }
+    ]
+}

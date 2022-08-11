@@ -2,8 +2,11 @@ package freshservice
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
+	"os"
+	"path"
 	"strings"
 )
 
@@ -54,4 +57,20 @@ func ParseNextPage(rawURL string) string {
 		return ""
 	}
 	return fmt.Sprintf("page=%s", u.Query().Get("page"))
+}
+
+func readTestData(fileName string) ([]byte, error) {
+	testDataDir := "test-data"
+	testFile := path.Join(testDataDir, fileName)
+
+	jsonFile, err := os.Open(testFile)
+	if err != nil {
+		return []byte{}, err
+	}
+
+	byteValue, err := ioutil.ReadAll(jsonFile)
+	if err != nil {
+		return []byte{}, err
+	}
+	return byteValue, nil
 }
