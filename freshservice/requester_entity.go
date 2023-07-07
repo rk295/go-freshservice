@@ -8,32 +8,47 @@ import (
 
 // RequesterDetails are the details related to a specific task in Freshservice
 type RequesterDetails struct {
-	ID                                        int                   `json:"id"`
-	IsAgent                                   bool                  `json:"is_agent"`
-	FirstName                                 string                `json:"first_name"`
-	LastName                                  string                `json:"last_name"`
-	JobTitle                                  string                `json:"job_title"`
-	PrimaryEmail                              string                `json:"primary_email"`
-	SecondaryEmails                           []string              `json:"secondary_emails"`
-	WorkPhoneNumber                           string                `json:"work_phone_number"`
-	MobilePhoneNumber                         string                `json:"mobile_phone_number"`
-	DepartmentIds                             []int                 `json:"department_ids"`
-	CanSeeAllTicketsFromAssociatedDepartments bool                  `json:"can_see_all_tickets_from_associated_departments"`
-	ReportingManagerID                        int                   `json:"reporting_manager_id"`
-	Address                                   string                `json:"address"`
-	TimeZone                                  string                `json:"time_zone"`
-	TimeFormat                                string                `json:"time_format"`
-	Language                                  string                `json:"language"`
-	LocationID                                int                   `json:"location_id"`
-	BackgroundInformation                     string                `json:"background_information"`
-	CustomFields                              RequesterCustomFields `json:"custom_fields"`
-	Active                                    bool                  `json:"active"`
-	HasLoggedIn                               bool                  `json:"has_logged_in"`
+	ID                                        int               `json:"id"`
+	IsAgent                                   bool              `json:"is_agent"`
+	FirstName                                 string            `json:"first_name"`
+	LastName                                  string            `json:"last_name"`
+	JobTitle                                  string            `json:"job_title"`
+	PrimaryEmail                              string            `json:"primary_email"`
+	SecondaryEmails                           []string          `json:"secondary_emails"`
+	WorkPhoneNumber                           string            `json:"work_phone_number"`
+	MobilePhoneNumber                         string            `json:"mobile_phone_number"`
+	DepartmentIds                             []int             `json:"department_ids"`
+	CanSeeAllTicketsFromAssociatedDepartments bool              `json:"can_see_all_tickets_from_associated_departments"`
+	ReportingManagerID                        int               `json:"reporting_manager_id"`
+	Address                                   string            `json:"address"`
+	TimeZone                                  string            `json:"time_zone"`
+	TimeFormat                                string            `json:"time_format"`
+	Language                                  string            `json:"language"`
+	LocationID                                int               `json:"location_id"`
+	BackgroundInformation                     string            `json:"background_information"`
+	CustomFields                              map[string]string `json:"custom_fields"`
+	Active                                    bool              `json:"active"`
+	HasLoggedIn                               bool              `json:"has_logged_in"`
 }
 
-type RequesterCustomFields struct {
-	QuidditchRole       string `json:"quidditch_role"`
-	HogsmeadePermission bool   `json:"hogsmeade_permission"`
+type RequesterUpdateDetails struct {
+	FirstName                                 string            `json:"first_name,omitempty"`
+	LastName                                  string            `json:"last_name,omitempty"`
+	JobTitle                                  string            `json:"job_title,omitempty"`
+	PrimaryEmail                              string            `json:"primary_email,omitempty"`
+	SecondaryEmails                           []string          `json:"secondary_emails,omitempty"`
+	WorkPhoneNumber                           string            `json:"work_phone_number,omitempty"`
+	MobilePhoneNumber                         string            `json:"mobile_phone_number,omitempty"`
+	DepartmentIds                             []int             `json:"department_ids,omitempty"`
+	CanSeeAllTicketsFromAssociatedDepartments bool              `json:"can_see_all_tickets_from_associated_departments,omitempty"`
+	ReportingManagerID                        int               `json:"reporting_manager_id,omitempty"`
+	Address                                   string            `json:"address,omitempty"`
+	TimeZone                                  string            `json:"time_zone,omitempty"`
+	TimeFormat                                string            `json:"time_format,omitempty"`
+	Language                                  string            `json:"language,omitempty"`
+	LocationID                                int               `json:"location_id,omitempty"`
+	BackgroundInformation                     string            `json:"background_information,omitempty"`
+	CustomFields                              map[string]string `json:"custom_fields,omitempty"`
 }
 
 // RequesterListOptions holds the available options that can be
